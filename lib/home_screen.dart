@@ -292,6 +292,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     SizedBox(height: 16),
+
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CarouselSlider.builder(
+                          itemCount: imgList.length,
+                          itemBuilder: (context, index, realIndex) {
+                            final urlImage = imgList[index]['url']!;
+                            return buildImage(urlImage, index);
+                          },
+                          options: CarouselOptions(
+                            height: 220, // Adjust height to suit your design
+                            autoPlay: true,
+                            enlargeCenterPage: false,
+                            viewportFraction: 0.90, // 👈 Shows part of next/prev image
+                            onPageChanged: (index, reason) =>
+                                setState(() => activeIndex = index),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        buildIndicator(),
+                        SizedBox(height: 20),
+                        buildCard(),
+                        SizedBox(height: 20,)
+                      ],
+                    ),
+
+                    SizedBox(height: 16,),
+
                     // Documentation Card
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -728,32 +757,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     // Add bottom padding to ensure content is not cut off
                     SizedBox(height: 24),
-
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CarouselSlider.builder(
-                          itemCount: imgList.length,
-                          itemBuilder: (context, index, realIndex) {
-                            final urlImage = imgList[index]['url']!;
-                            return buildImage(urlImage, index);
-                          },
-                          options: CarouselOptions(
-                            height: 220, // Adjust height to suit your design
-                            autoPlay: true,
-                            enlargeCenterPage: false,
-                            viewportFraction: 0.90, // 👈 Shows part of next/prev image
-                            onPageChanged: (index, reason) =>
-                                setState(() => activeIndex = index),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        buildIndicator(),
-                        SizedBox(height: 20),
-                        buildCard(),
-                        SizedBox(height: 20,)
-                      ],
-                    ),
                   ],
                 )
               ],

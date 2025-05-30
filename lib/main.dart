@@ -17,6 +17,7 @@ import 'get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'time_sheet/repository/time_sheet_repository.dart';
+import 'package:my_timesheet_app/menu_screen.dart';
 
 void main() async{
   runZonedGuarded(() async {
@@ -87,6 +88,13 @@ class TodoApp extends StatelessWidget {
             builder: (context, state) {
               final shift = state.extra as ShiftItem; // Cast extra to your type
               return ShiftDetailsScreen(shift: shift);
+            },
+          ),
+          GoRoute(
+            path: '/menu-screen',
+            name: 'menuScreen',
+            builder: (context, state) {
+              return MenuScreen();
             },
           ),
         ],
