@@ -110,7 +110,7 @@ class TodoApp extends StatelessWidget {
       child: MaterialApp.router(
         routerConfig: _router,
         debugShowCheckedModeBanner: false,
-        title: 'Todo App',
+        title: 'Xpress Health',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

@@ -30,64 +30,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
 
   late TabController _tabController;
 
-  final List<Shift> shifts = [
-    Shift(
-      date: DateTime(2025, 8, 6),
-      location: 'Riada House Unit',
-      subLocation: 'House Unit',
-      distance: 12,
-      startTime: const TimeOfDay(hour: 11, minute: 0),
-      endTime: const TimeOfDay(hour: 14, minute: 0),
-      hourlyRate: 23,
-      totalPay: 38,
-      hours: 6,
-      county: 'Co.Dublin',
-      isPremium: true,
-      imageUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
-    ),
-    Shift(
-      date: DateTime(2025, 8, 6),
-      location: 'Riada House Unit',
-      subLocation: 'House Unit',
-      distance: 12,
-      startTime: const TimeOfDay(hour: 8, minute: 0),
-      endTime: const TimeOfDay(hour: 8, minute: 0),
-      hourlyRate: 10,
-      totalPay: 60,
-      hours: 6,
-      county: 'Co.Dublin',
-      isPremium: false,
-      isNightShift: true,
-    ),
-    Shift(
-      date: DateTime(2025, 8, 6),
-      location: 'Riada House Unit',
-      subLocation: 'House Unit',
-      distance: 12,
-      startTime: const TimeOfDay(hour: 11, minute: 0),
-      endTime: const TimeOfDay(hour: 14, minute: 0),
-      hourlyRate: 23,
-      totalPay: 38,
-      hours: 6,
-      county: 'Co.Dublin',
-      isPremium: true,
-      imageUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
-    ),
-    Shift(
-      date: DateTime(2025, 8, 6),
-      location: 'Riada House Unit',
-      subLocation: 'House Unit',
-      distance: 12,
-      startTime: const TimeOfDay(hour: 8, minute: 0),
-      endTime: const TimeOfDay(hour: 8, minute: 0),
-      hourlyRate: 10,
-      totalPay: 60,
-      hours: 6,
-      county: 'Co.Dublin',
-      isPremium: false,
-      isNightShift: true,
-    ),
-  ];
   late TimeSheetViewmodel _timeSheetViewmodel;
   // Scroll controllers for each tab to preserve position
   final Map<int, ScrollController> _tabScrollControllers = {};
@@ -97,9 +39,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
   void initState() {
     super.initState();
     _timeSheetViewmodel = Provider.of<TimeSheetViewmodel>(context, listen: false);
-    /*_timeSheetViewmodel.getSubmittedResponse();
-    _timeSheetViewmodel.getWithdrawResponse();
-    _timeSheetViewmodel.getFlaggedResponse();*/
 
     _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
 
@@ -109,7 +48,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
       _scrollPositions[i] = 0.0;
     }
 
-   // _timeSheetViewmodel.getPayoutData();
   }
 
   void _saveScrollPosition(int tabIndex) {
@@ -200,8 +138,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
                 child: Consumer<TimeSheetViewmodel>(
                   builder: (context, viewModel, child) {
                     final payout = viewModel.payoutData;
-                    print("payout@@##:${payout?.holidayPayAmount.toString()}");
-                    print("payout@@##........:${payout?.basicPayAmount}");
                     String totalBalance = '£--';
                     String holidayPay = '£--';
 
@@ -323,10 +259,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
         body: TabBarView(
           controller: _tabController,
           children: [
-            /*_buildTabContent(0, 'Submitted'),
-            _buildTabContent(1, 'Withdraw'),
-            _buildTabContent(2, 'Flagged'),
-            _buildUnattendedTab(),*/
             _buildUnattendedTab(),
             _buildTabContentSubmitted(0, 'Submitted'),
             _buildTabContentWithdraw(1, 'Withdraw'),
@@ -342,7 +274,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
     return Consumer<TimeSheetViewmodel>(
       builder: (context, viewModel, child) {
         List<ShiftSubmitted>? shiftList=viewModel.submittedShiftListData?.data[0].shifts;
-        print("shiftList:${shiftList}");
         if (shiftList == null) {
           return Center(child: CircularProgressIndicator());
         }
@@ -373,7 +304,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
     return Consumer<TimeSheetViewmodel>(
       builder: (context, viewModel, child) {
         List<ShiftWithdraw>? shiftList=viewModel.withdrawShiftListData?.data[0].shifts;
-        print("shiftList:${shiftList}");
         if (shiftList == null) {
           return Center(child: CircularProgressIndicator());
         }
@@ -404,7 +334,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
     return Consumer<TimeSheetViewmodel>(
       builder: (context, viewModel, child) {
         List<ShiftFlagged>? shiftList=viewModel.flaggedShiftListData?.data[0].shifts;
-        print("shiftList:${shiftList}");
         if (shiftList == null) {
           return Center(child: CircularProgressIndicator());
         }
@@ -434,7 +363,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
     return Consumer<TimeSheetViewmodel>(
       builder: (context, viewModel, child) {
         final shiftList = viewModel.unattendedShiftData?.data;
-        print("shiftList:${shiftList}");
         if (shiftList == null) {
           return Center(child: CircularProgressIndicator());
         }
@@ -465,167 +393,6 @@ class _TimeSheetScreenState extends State<TimeSheetScreen>  with TickerProviderS
       },
     );
   }
-
-  /*Widget _buildTimeSheetItem(int index, String status) {
-    final bool isEven = index % 2 == 0;
-    final String date = isEven ? '21 MAY WED' : '25 MAY SUN';
-    final String time = isEven ? '06:51 AM - 06:54 AM' : '08:00 AM - 02:00 PM';
-    final String amount = isEven ? '£0.0' : '£66.0';
-    final String hours = isEven ? '0.05 Hrs • £10.0/hr' : '6.0 Hrs • £11.0/hr';
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.purple.withOpacity(0.1),
-                Colors.orange.withOpacity(0.1),
-              ],
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      date,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    if (status == 'Unattended')
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.teal,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text('Confirm'),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () {
-                    // Save current scroll position before navigating
-                    _saveScrollPosition(_tabController.index);
-
-                    // Navigate to details screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TimeSheetDetailScreen(
-                          date: date,
-                          location: 'GWE Hospital',
-                          time: time,
-                          amount: amount,
-                          onReturn: () {
-                            // Restore scroll position when returning
-                            _restoreScrollPosition(_tabController.index);
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'GWE Hospital',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '600000000',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: const BoxDecoration(
-                              color: Colors.orange,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            time,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            hours,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          Text(
-                            amount,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }*/
 
   Widget dottedLine() {
     return CustomPaint(
